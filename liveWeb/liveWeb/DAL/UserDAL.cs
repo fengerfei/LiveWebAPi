@@ -21,6 +21,18 @@ namespace liveWeb.DAL
             return dbEntity.SelectFirst<userEntiy>(sql);
 
         }
+        public userEntiy getUser(DbHelper dbHelper, int userid)
+        {
+            string sql = @"select id,name,password,usertype,lastlogintime,status,Flag,insystem,roomid,
+                        longitude,latitude from user where id=@userid";
+
+            dbHelper.AddParameter("@userid", userid);
+
+            DbEntity dbEntity = new DbEntity(dbHelper);
+            return dbEntity.SelectFirst<userEntiy>(sql);
+        }
+
+
 
         public IList<userEntiy> getUserList(DbHelper dbHelper, UserReqEntity req)
         {
@@ -46,6 +58,30 @@ namespace liveWeb.DAL
             var result =dbEntity.Select<userEntiy>(sql);
             return result;
 
+
+        }
+
+        public void updateRoom(DbHelper dbHelper,ChangeUserRoom room)
+        {
+            string sql = @" update user set Roomid=@roomid where id=@userid";
+
+            dbHelper.AddParameter("@roomid", room.roomid);
+            dbHelper.AddParameter("@userid", room.userid);
+
+            dbHelper.ExecuteNonQuerySQL(sql);
+
+        }
+
+        public void updateUser(DbHelper dbHelper, ChangeUserEntity entity)
+        {
+            DbEntity dbEntity = new DbEntity(dbHelper);
+
+            ChangeUserTable table = new ChangeUserTable();
+            table.id = entity.id;
+            table.insystem = entity.insystem;
+            table.status = entity.status;
+            table.Flag = entity.Flag;
+            dbEntity.Update(table, "id");
 
         }
     }

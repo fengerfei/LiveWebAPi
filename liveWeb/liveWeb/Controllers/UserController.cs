@@ -26,5 +26,44 @@ namespace liveWeb.Controllers
 
             }
         }
+
+        [Route("api/User/ChangeUserRoom")]
+        public ResponseEntity<userEntiy> PostChangeUserRoom([FromBody] ChangeUserRoom req)
+        {
+            //userEntiy> result = new List<userEntiy>();
+            using (var dbhelper = CreateMobileDbHelper())
+            {
+                var dal = new UserDAL();
+
+                dal.updateRoom(dbhelper, req);
+
+                userEntiy entiy = new userEntiy();
+
+                entiy = dal.getUser(dbhelper, req.userid);
+
+                return ResponseHelper<userEntiy>.Success(entiy);
+
+            }
+        }
+
+        public ResponseEntity<userEntiy> Post([FromBody] ChangeUserEntity req)
+        {
+            //userEntiy> result = new List<userEntiy>();
+            using (var dbhelper = CreateMobileDbHelper())
+            {
+                var dal = new UserDAL();
+
+                dal.updateUser(dbhelper, req);
+
+                userEntiy entiy = new userEntiy();
+
+                entiy = dal.getUser(dbhelper, req.id);
+
+                return ResponseHelper<userEntiy>.Success(entiy);
+
+            }
+        }
+
+
     }
 }
