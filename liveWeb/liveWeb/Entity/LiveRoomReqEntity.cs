@@ -19,4 +19,10 @@ namespace liveWeb.Entity
         public int usertype { get; set; }
     }
 
+    public class RoomreqEntity
+    {
+        public int roomid { get; set;}
+        public string roomname { get; set; }
+    }
+
 }

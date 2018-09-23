@@ -24,7 +24,7 @@ namespace liveWeb.DAL
         public userEntiy getUser(DbHelper dbHelper, int userid)
         {
             string sql = @"select id,name,password,usertype,lastlogintime,status,Flag,insystem,roomid,
-                        longitude,latitude from user where id=@userid";
+                        longitude,latitude,freeStartTime from user where id=@userid";
 
             dbHelper.AddParameter("@userid", userid);
 
@@ -37,7 +37,7 @@ namespace liveWeb.DAL
         public IList<userEntiy> getUserList(DbHelper dbHelper, UserReqEntity req)
         {
             string sql = @"select id,name,password,usertype,lastlogintime,status,Flag,insystem,roomid,
-                        longitude,latitude from user where 1=1";
+                        longitude,latitude,freeStartTime from user where 1=1";
             if (!string.IsNullOrEmpty(req.name))
             {
                 sql += " and name like @name";
@@ -53,6 +53,8 @@ namespace liveWeb.DAL
                 sql += " and status =@status";
                 dbHelper.AddParameter("@status", req.userStatus);
             }
+
+            sql += " order by status desc,freeStartTime";
 
             DbEntity dbEntity = new DbEntity(dbHelper);
             var result =dbEntity.Select<userEntiy>(sql);
@@ -76,11 +78,24 @@ namespace liveWeb.DAL
         {
             DbEntity dbEntity = new DbEntity(dbHelper);
 
+            var OldUser = getUser(dbHelper, entity.id);
+
+
             ChangeUserTable table = new ChangeUserTable();
             table.id = entity.id;
             table.insystem = entity.insystem;
             table.status = entity.status;
             table.Flag = entity.Flag;
+            //如果等于9那么更新日期重新排序
+            if (entity.status == 9)
+            {
+                table.freeStartTime = DateTime.Now;
+            }
+            else
+            {
+                table.freeStartTime = OldUser.freeStartTime;
+            }
+
             dbEntity.Update(table, "id");
 
         }

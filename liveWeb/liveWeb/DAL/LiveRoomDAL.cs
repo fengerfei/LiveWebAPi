@@ -104,5 +104,27 @@ namespace liveWeb.DAL
 
             
         }
+
+        internal IList<userEntiy> getRoomNumber(DbHelper dbhelper, RoomreqEntity req)
+        {
+            string sql = @"select n.id,n.name,n.password,n.usertype,n.lastlogintime,n.status,n.Flag,n.insystem,n.roomid,
+                        n.longitude,n.latitude,n.freeStartTime from user n inner join liveroom l on n.roomid=l.id
+                        where 1=1";
+            if (!string.IsNullOrEmpty(req.roomname))
+            {
+                sql += " and l.roomname = @name";
+                dbhelper.AddParameter("@name", req.roomname);
+            }
+            if (req.roomid > 0)
+            {
+                sql += " and n.roomid = @roomid";
+                dbhelper.AddParameter("@roomid", req.roomid);
+            }
+            sql += " order by status desc,freeStartTime";
+
+            DbEntity dbEntity = new DbEntity(dbhelper);
+            var result = dbEntity.Select<userEntiy>(sql);
+            return result;
+        }
     }
 }

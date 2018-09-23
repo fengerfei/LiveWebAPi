@@ -21,6 +21,7 @@ namespace liveWeb.Entity
     [Serializable]
     public class ChangeUserTable : ChangeUserEntity
     {
+        public DateTime freeStartTime { get; set; }
     }
 
     public class ChangeUserRoom

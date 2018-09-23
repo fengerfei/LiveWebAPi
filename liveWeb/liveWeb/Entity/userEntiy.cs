@@ -23,5 +23,7 @@ namespace liveWeb.Entity
         public double longitude {get;set;}
         public double latitude {get;set;}
 
+        public DateTime freeStartTime { get; set; }
+
     }
 }

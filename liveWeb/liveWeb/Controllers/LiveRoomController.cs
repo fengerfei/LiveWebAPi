@@ -129,9 +129,21 @@ namespace liveWeb.Controllers
                 return ResponseHelper<LiveRoomEntiy>.Success(result);
 
             }
-        }            
-    
-    
+        }
+
+        [Route("api/LiveRoom/RoomNumber")]
+        public ResponseEntity<IList<userEntiy>> GetLiveRoomNumber([FromUri]RoomreqEntity req)
+        {
+            IList<userEntiy> result = new List<userEntiy>();
+            using (var dbhelper = CreateMobileDbHelper())
+            {
+                var dal = new LiveRoomDAL();
+                result = dal.getRoomNumber(dbhelper, req);
+
+                return ResponseHelper<IList<userEntiy>>.Success(result);
+
+            }
+        }
 
     }
 }
