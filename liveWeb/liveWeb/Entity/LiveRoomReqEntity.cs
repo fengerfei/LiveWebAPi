@@ -21,7 +21,7 @@ namespace liveWeb.Entity
 
     public class RoomreqEntity
     {
-        public int roomid { get; set;}
+        public string roomid { get; set;}
         public string roomname { get; set; }
     }
 

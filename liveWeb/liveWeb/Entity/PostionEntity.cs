@@ -9,7 +9,7 @@ namespace liveWeb.Entity
     public class PostionEntity
     {
         public int UserId { get; set; }
-        public int RoomId { get; set; }
+        public string RoomId { get; set; }
 
         public double longitude { get; set; }
         public double latitude { get; set; }
@@ -20,7 +20,7 @@ namespace liveWeb.Entity
     {
         public int postionid { get; set; }
         public DateTime recordtime { get; set; }
-        public int roomid { get; set; }
+        public string roomid { get; set; }
     }
 
     [EntityClass(LowerCaseKey = true, TableName = "postion")]

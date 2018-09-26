@@ -86,6 +86,7 @@ namespace liveWeb.DAL
             table.insystem = entity.insystem;
             table.status = entity.status;
             table.Flag = entity.Flag;
+            table.roomid = entity.roomid;
             //如果等于9那么更新日期重新排序
             if (entity.status == 9)
             {

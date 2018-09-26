@@ -9,6 +9,6 @@ namespace liveWeb.Entity
     {
         public int userid { get; set; }
 
-        public int roomid { get; set; } 
+        public string roomid { get; set; } 
     }
 }

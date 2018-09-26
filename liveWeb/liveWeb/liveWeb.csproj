@@ -158,10 +158,12 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LiveRoomController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\MsgController.cs" />
     <Compile Include="Controllers\PostionController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="DAL\LiveRoomDAL.cs" />
+    <Compile Include="DAL\MsgDAL.cs" />
     <Compile Include="DAL\PostionDAL.cs" />
     <Compile Include="DAL\UserDAL.cs" />
     <Compile Include="Entity\BaseResponseEntity.cs" />
@@ -170,6 +172,7 @@
     <Compile Include="Entity\LiveRoomEntiy.cs" />
     <Compile Include="Entity\LiveRoomReqEntity.cs" />
     <Compile Include="Entity\LoginReqEntiy.cs" />
+    <Compile Include="Entity\MsgInfoEntity.cs" />
     <Compile Include="Entity\PagerEntity.cs" />
     <Compile Include="Entity\PostionEntity.cs" />
     <Compile Include="Entity\PostionReqEntity.cs" />

@@ -43,7 +43,8 @@ namespace liveWeb.DAL
                     from postion where userid=@userid ";
             
             dbhelper.AddParameter("@userid",req.userid);
-            if (req.roomid !=0){
+            if (!string.IsNullOrEmpty(req.roomid) && req.roomid != "0")
+            {
 
                 sql +=" and roomid=@roomid";
                 dbhelper.AddParameter("@roomid",req.roomid);

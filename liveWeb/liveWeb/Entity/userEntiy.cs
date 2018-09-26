@@ -18,7 +18,7 @@ namespace liveWeb.Entity
         public string Flag {get;set;}
 
         public bool insystem {get;set;}
-        public int roomid {get;set;}
+        public string roomid {get;set;}
 
         public double longitude {get;set;}
         public double latitude {get;set;}

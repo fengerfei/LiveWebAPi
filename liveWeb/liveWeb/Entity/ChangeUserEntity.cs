@@ -15,6 +15,8 @@ namespace liveWeb.Entity
         public string Flag { get; set; }
         public int insystem { get; set; }
 
+        public string roomid { get; set; }
+
     }
 
     [EntityClass(LowerCaseKey = true, TableName = "user")]
@@ -27,7 +29,7 @@ namespace liveWeb.Entity
     public class ChangeUserRoom
     {
         public int userid { get; set; }
-        public int roomid { get; set; }
+        public string roomid { get; set; }
     }
 
 }

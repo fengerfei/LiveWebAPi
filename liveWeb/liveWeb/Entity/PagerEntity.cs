@@ -18,4 +18,12 @@ namespace liveWeb.Entity
     {
         public object ExtraData { get; set; }
     }
+
+    public class PagerDateEntity<T>
+    {
+        public int PageSize { get; set; }
+        public DateTime recordTime { get; set; }
+        public bool HasMore { get; set; }
+        public IList<T> RecordData { get; set; }
+    }
 }

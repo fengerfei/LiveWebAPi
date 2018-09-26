@@ -84,6 +84,22 @@ namespace liveWeb.Comm
                 }
             };
         }
+
+        public static ResponseEntity<PagerDateEntity<T>> SuccessPager(IList<T> data, DateTime dateTime, int pageSize)
+        {
+            return new ResponseEntity<PagerDateEntity<T>>()
+            {
+                Code = ResponeCode.Success,
+                Message = "success",
+                Data = new PagerDateEntity<T>()
+                {
+                    RecordData = data,
+                    recordTime = dateTime,
+                    PageSize = pageSize,
+                    HasMore = pageSize == data.Count
+                }
+            };
+        }
     }
 
     /// <summary>

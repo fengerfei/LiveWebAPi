@@ -145,6 +145,30 @@ namespace liveWeb.Controllers
             }
         }
 
+        [Route("api/LiveRoom/ChangeRoomMainId")]
+        public ResponseEntity<LiveRoomEntiy> ChangeRoomMainId([FromBody]ChangeUserRoom req)
+        {
+            LiveRoomEntiy result = new LiveRoomEntiy();
+
+            using (var dbhelper = CreateMobileDbHelper())
+            {
+                var dal = new LiveRoomDAL();
+                var userDal = new UserDAL();
+                dal.changeRoommainid(dbhelper, req.roomid,req.userid);
+
+                MyRoomReqEntity myreq = new MyRoomReqEntity();
+
+                myreq.userid = req.userid;
+                myreq.usertype = 2;
+
+                result = dal.GetMyRoom(dbhelper, myreq);
+            }
+
+
+            return ResponseHelper<LiveRoomEntiy>.Success(result);
+
+        }
+
     }
 }
 

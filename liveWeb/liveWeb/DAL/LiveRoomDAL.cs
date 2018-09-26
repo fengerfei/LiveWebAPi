@@ -13,7 +13,8 @@ namespace liveWeb.DAL
         public IList<LiveRoomEntiy> getRoomList(DbHelper dbhelper, LiveRoomReqEntity req)
         {
             string sql = @"select r.id as roomid,r.roomname,r.starttime,r.memo,r.flag,r.mainid,
-                r.chatstatus,r.livestatus,r.liveid,u1.name AS mainname,u2.name AS livename from liveroom r left join
+                r.chatstatus,r.livestatus,r.liveid,u1.name AS mainname,u2.name AS livename,
+                r.hxroomid,r.liveroomid from liveroom r left join
                  user u1 on r.mainid = u1.id left join user u2 on r.liveid = u2.id where 1=1 ";
             if (!String.IsNullOrEmpty(req.roomname))
             {
@@ -42,7 +43,8 @@ namespace liveWeb.DAL
         public LiveRoomEntiy GetMyRoom(DbHelper dbhelper, MyRoomReqEntity req)
         {
             string sql = @"select r.id as roomid,r.roomname,r.starttime,r.memo,r.flag,r.mainid,
-                r.chatstatus,r.livestatus,r.liveid,u1.name AS mainname,u2.name AS livename from liveroom r left join
+                r.chatstatus,r.livestatus,r.liveid,u1.name AS mainname,u2.name AS livename,
+                r.hxroomid,r.liveroomid from liveroom r left join
                  user u1 on r.mainid = u1.id left join user u2 on r.liveid = u2.id ";
 
             if (req.usertype == 0){
@@ -104,8 +106,16 @@ namespace liveWeb.DAL
 
             
         }
+        public void changeRoommainid(DbHelper dbhelper,string roomid,int userid)
+        {
+            string sql = @" update liveroom set mainid = @userid where id=@roomid";
+            dbhelper.AddParameter("@roomid", roomid);
+            dbhelper.AddParameter("@userid", userid);
+            dbhelper.ExecuteNonQuerySQL(sql);
 
-        internal IList<userEntiy> getRoomNumber(DbHelper dbhelper, RoomreqEntity req)
+        }
+
+        public IList<userEntiy> getRoomNumber(DbHelper dbhelper, RoomreqEntity req)
         {
             string sql = @"select n.id,n.name,n.password,n.usertype,n.lastlogintime,n.status,n.Flag,n.insystem,n.roomid,
                         n.longitude,n.latitude,n.freeStartTime from user n inner join liveroom l on n.roomid=l.id
@@ -115,7 +125,7 @@ namespace liveWeb.DAL
                 sql += " and l.roomname = @name";
                 dbhelper.AddParameter("@name", req.roomname);
             }
-            if (req.roomid > 0)
+            if (!String.IsNullOrEmpty(req.roomid) && !req.roomid.Equals("0"))
             {
                 sql += " and n.roomid = @roomid";
                 dbhelper.AddParameter("@roomid", req.roomid);
