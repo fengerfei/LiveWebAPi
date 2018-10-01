@@ -59,22 +59,22 @@ namespace liveWeb.Controllers
 
 
                 MyRoomReqEntity myreq = new MyRoomReqEntity();
-                if (req.mainid != 0)
+                if (req.liveid != 0)
                 {
-                    myreq.userid = req.mainid;
+                    myreq.userid = req.liveid;                    
                 }
                 else
                 {
-                    myreq.userid = req.liveid;
+                    myreq.userid = req.mainid;
                 }
 
                 result = dal.GetMyRoom(dbhelper, myreq);
-                }
+           }
 
 
-                return ResponseHelper<LiveRoomEntiy>.Success(result);
+           return ResponseHelper<LiveRoomEntiy>.Success(result);
 
-            }
+        }
 
         public ResponseEntity<LiveRoomEntiy> PostCreateRoom([FromBody]liveRoomCreateEntity req)
         {
@@ -168,6 +168,26 @@ namespace liveWeb.Controllers
             return ResponseHelper<LiveRoomEntiy>.Success(result);
 
         }
+
+        [Route("api/LiveRoom/CloseRoom")]
+        public ResponseEntity<LiveRoomEntiy> GetCloseRoom([FromUri]ChangeUserRoom req)
+        {
+            //关闭房间同时清空视频相关信息。
+            LiveRoomEntiy result = new LiveRoomEntiy();
+
+            using (var dbhelper = CreateMobileDbHelper())
+            {
+
+                var dal = new LiveRoomDAL();
+                var userDal = new UserDAL();
+                dal.CloseRoom(dbhelper, req);
+                result = dal.GetRoomById(dbhelper, req.roomid);
+            }
+
+            return ResponseHelper<LiveRoomEntiy>.Success(result);
+
+        }
+
 
     }
 }

@@ -72,6 +72,24 @@ namespace liveWeb.DAL
 
             dbHelper.ExecuteNonQuerySQL(sql);
 
+            int hisid = HistroyRoomDL.GetHisId(dbHelper, room.roomid);
+            try
+            {
+                UserJoinRoomHisTable his = new UserJoinRoomHisTable();
+                his.hisid = hisid;
+                his.roomid = room.roomid;
+                his.userid = room.userid;
+                his.jointime = DateTime.Now;
+                DbEntity dbEntity = new DbEntity(dbHelper);
+                dbEntity.Insert(his);
+
+            }
+            catch (Exception ex)
+            {
+                //重复插入会报错，忽略掉这里
+            }
+
+
         }
 
         public void updateUser(DbHelper dbHelper, ChangeUserEntity entity)

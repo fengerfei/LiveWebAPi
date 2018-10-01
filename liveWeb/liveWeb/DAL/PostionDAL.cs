@@ -13,6 +13,9 @@ namespace liveWeb.DAL
         public void updatePostion(DbHelper dbhelper, PostionEntity req)
         {
 
+            //得到当前hisid
+            int hisid = HistroyRoomDL.GetHisId(dbhelper, req.RoomId);
+
             DbEntity entity = new DbEntity(dbhelper);
 
             
@@ -22,6 +25,7 @@ namespace liveWeb.DAL
             table.latitude = req.latitude;
             table.longitude = req.longitude;
             table.RoomId = req.RoomId;
+            table.hisid = hisid;
             entity.Insert(table);
 
             //更新user里面的位置
@@ -48,6 +52,45 @@ namespace liveWeb.DAL
 
                 sql +=" and roomid=@roomid";
                 dbhelper.AddParameter("@roomid",req.roomid);
+            }
+
+            if (req.startTime != null)
+            {
+                sql += " and recordtime>@recordtime";
+                dbhelper.AddParameter("@recordtime", req.startTime);
+            }
+            if (req.Size > 0)
+            {
+                sql += " limit 0," + req.Size;
+            }
+
+            DbEntity entity = new DbEntity(dbhelper);
+
+            return entity.Select<PostionInfo>(sql);
+
+        }
+
+        public IList<PostionInfo> GetHisPostion(DbHelper dbhelper, HistroyPostionReqEntity req)
+        {
+            string sql = @"select  id as postionid,UserId,longitude,latitude,roomid,recordtime 
+                    from postion where userid=@userid ";
+
+            dbhelper.AddParameter("@userid", req.userid);
+            if (req.hisroomid != 0)
+            {
+
+                sql += " and hisid=@hisid";
+                dbhelper.AddParameter("@hisid", req.hisroomid);
+            }
+
+            if (req.startTime != null)
+            {
+                sql += " and recordtime>@recordtime";
+                dbhelper.AddParameter("@recordtime", req.startTime);
+            }
+            if (req.Size > 0)
+            {
+                sql += " limit 0," + req.Size;
             }
 
             DbEntity entity = new DbEntity(dbhelper);

@@ -28,6 +28,8 @@ namespace liveWeb.Entity
 
         public string liveroomid { get; set; }
 
+        public int hisid { get; set; }
+
     }
 
     public class liveRoomCreateEntity
@@ -50,6 +52,8 @@ namespace liveWeb.Entity
     {
         public bool isclose { get; set; }
 
+        public bool isOpen { get; set; }
+
         public string id { get; set; }
     }
 
@@ -58,5 +62,6 @@ namespace liveWeb.Entity
     public class liveRoomCreateTable : liveRoomUpdateEntity
     {
 
+        public DateTime startTime { get; set; }
     }
 }

@@ -9,6 +9,10 @@ namespace liveWeb.Entity
     {
         public int userid { get; set; }
 
-        public string roomid { get; set; } 
+        public string roomid { get; set; }
+
+        public DateTime? startTime { get; set; }
+
+        public int Size { get; set; } 
     }
 }

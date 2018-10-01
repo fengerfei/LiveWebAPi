@@ -44,8 +44,9 @@ namespace liveWeb.DAL
         {
             string sql = @"select r.id as roomid,r.roomname,r.starttime,r.memo,r.flag,r.mainid,
                 r.chatstatus,r.livestatus,r.liveid,u1.name AS mainname,u2.name AS livename,
-                r.hxroomid,r.liveroomid from liveroom r left join
-                 user u1 on r.mainid = u1.id left join user u2 on r.liveid = u2.id ";
+                r.hxroomid,r.liveroomid,h.id as hisid from liveroom r left join
+                 user u1 on r.mainid = u1.id left join user u2 on r.liveid = u2.id 
+                 left join roomhistory h on r.id = h.roomid and h.isopen = 1";
 
             if (req.usertype == 0){
                 sql +=" inner join user o on o.roomid = r.id where o.id =@userid";
@@ -90,6 +91,8 @@ namespace liveWeb.DAL
         {
             liveRoomCreateTable table = new liveRoomCreateTable();
 
+            DateTime st =  DateTime.Now;
+
             table.id = req.id;
             table.liveid = req.liveid;
             table.flag = req.flag;
@@ -99,10 +102,47 @@ namespace liveWeb.DAL
             table.roomname = req.roomname;
             table.chatstatus = req.chatstatus;
             table.isclose = req.isclose;
+            table.hxroomid = req.hxroomid;
+            table.liveroomid = req.liveroomid;
+            table.isOpen = req.isOpen;
+
+            if (req.isOpen)
+            {
+                table.startTime = st;
+            }
+
 
             DbEntity dbEntity = new DbEntity(dbhelper);
 
             dbEntity.Update(table,"id");
+
+            if (req.isOpen){
+                //新增历史表
+                RoomHistroyTable rht = new RoomHistroyTable();
+                rht.roomid = req.id;
+                rht.startime = st;
+                rht.liveid = req.liveid;
+                rht.flag = req.flag;
+                rht.mainid = req.mainid;
+                rht.memo = req.memo;
+                rht.hxroomid = req.hxroomid;
+                rht.liveroomid = req.liveroomid;
+                rht.isopen = req.isOpen;
+                rht.roomname = req.roomname;
+                dbEntity.Insert(rht);
+
+
+                //插入历史表
+                int hisid = HistroyRoomDL.GetHisId(dbhelper, rht.roomid);
+
+                UserJoinRoomHisTable his = new UserJoinRoomHisTable();
+                his.hisid = hisid;
+                his.roomid = rht.roomid;
+                his.userid = req.liveid;
+                his.jointime = DateTime.Now;
+                dbEntity.Insert(his);
+
+            }
 
             
         }
@@ -135,6 +175,38 @@ namespace liveWeb.DAL
             DbEntity dbEntity = new DbEntity(dbhelper);
             var result = dbEntity.Select<userEntiy>(sql);
             return result;
+        }
+
+        public void CloseRoom(DbHelper dbhelper, ChangeUserRoom req)
+        {
+            //首先是所有群成员状态变成BCDEA离线
+            string sql = @"update user set status=0, roomid='0' where roomid=@roomid and usertype>1";
+            dbhelper.AddParameter("@roomid", req.roomid);
+            dbhelper.ExecuteNonQuerySQL(sql);
+
+            sql = @"update user set status=0 where roomid=@roomid and usertype=1";
+            dbhelper.AddParameter("@roomid", req.roomid);
+            dbhelper.ExecuteNonQuerySQL(sql);
+            //其次聊天室群主写为空
+
+            sql = @"update liveroom set mainid=0,flag='',liveroomid='0' where id=@roomid ";
+            dbhelper.AddParameter("@roomid", req.roomid);
+            dbhelper.ExecuteNonQuerySQL(sql);
+
+        }
+
+        public LiveRoomEntiy GetRoomById(DbHelper dbhelper, string roomid)
+        {
+            string sql = @"select r.id as roomid,r.roomname,r.starttime,r.memo,r.flag,r.mainid,
+                r.chatstatus,r.livestatus,r.liveid,u1.name AS mainname,u2.name AS livename,
+                r.hxroomid,r.liveroomid from liveroom r left join
+                 user u1 on r.mainid = u1.id left join user u2 on r.liveid = u2.id 
+                where r.id = @roomid";
+
+            dbhelper.AddParameter("@roomid", roomid);
+            DbEntity entity = new DbEntity(dbhelper);
+            return entity.SelectFirst<LiveRoomEntiy>(sql);
+
         }
     }
 }

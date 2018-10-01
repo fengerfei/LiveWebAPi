@@ -20,13 +20,12 @@ namespace liveWeb.Entity
     {
         public int postionid { get; set; }
         public DateTime recordtime { get; set; }
-        public string roomid { get; set; }
     }
 
     [EntityClass(LowerCaseKey = true, TableName = "postion")]
     [Serializable]
     public class PostionTable:PostionEntity
     {
-
+        public int hisid { get; set; }
     }
 }
