@@ -9,7 +9,7 @@ namespace liveWeb.Entity
     public class RoomHistroyBase
     {
         public string roomid { get; set; }
-        public DateTime startime { get; set; }
+        public DateTime startTime { get; set; }
         public string memo { get; set; }
         public string flag { get; set; }
         public int mainid { get; set; }

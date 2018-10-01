@@ -42,9 +42,14 @@ namespace liveWeb.Controllers
             {
 
                 var dal = new MsgDAL();
-
-                dal.InsertMsg(dbhelper, req);
-
+                try
+                {
+                    dal.InsertMsg(dbhelper, req);
+                }
+                catch (Exception ex)
+                {
+                    return ResponseHelper<string>.Error(ex.Message);
+                }
                 return ResponseHelper<string>.Success("更新消息成功");
 
             }

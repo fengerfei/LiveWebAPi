@@ -75,6 +75,7 @@ namespace liveWeb.DAL
             int hisid = HistroyRoomDL.GetHisId(dbHelper, room.roomid);
             try
             {
+
                 UserJoinRoomHisTable his = new UserJoinRoomHisTable();
                 his.hisid = hisid;
                 his.roomid = room.roomid;
@@ -116,6 +117,32 @@ namespace liveWeb.DAL
             }
 
             dbEntity.Update(table, "id");
+
+            //如果roomid有变化那么将其加入历史中。
+            if (String.IsNullOrEmpty(entity.roomid)){
+                return;
+            }
+            if (entity.roomid.Equals(OldUser.roomid)){
+                return;
+            }
+
+            int hisid = HistroyRoomDL.GetHisId(dbHelper, entity.roomid);
+            try
+            {
+
+                UserJoinRoomHisTable his = new UserJoinRoomHisTable();
+                his.hisid = hisid;
+                his.roomid = entity.roomid;
+                his.userid = entity.id;
+                his.jointime = DateTime.Now;
+                dbEntity.Insert(his);
+
+            }
+            catch (Exception ex)
+            {
+                //重复插入会报错，忽略掉这里
+            }
+
 
         }
     }

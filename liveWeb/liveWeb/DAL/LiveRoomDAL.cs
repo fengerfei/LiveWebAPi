@@ -120,7 +120,7 @@ namespace liveWeb.DAL
                 //新增历史表
                 RoomHistroyTable rht = new RoomHistroyTable();
                 rht.roomid = req.id;
-                rht.startime = st;
+                rht.startTime = st;
                 rht.liveid = req.liveid;
                 rht.flag = req.flag;
                 rht.mainid = req.mainid;
@@ -179,6 +179,7 @@ namespace liveWeb.DAL
 
         public void CloseRoom(DbHelper dbhelper, ChangeUserRoom req)
         {
+
             //首先是所有群成员状态变成BCDEA离线
             string sql = @"update user set status=0, roomid='0' where roomid=@roomid and usertype>1";
             dbhelper.AddParameter("@roomid", req.roomid);
@@ -189,7 +190,15 @@ namespace liveWeb.DAL
             dbhelper.ExecuteNonQuerySQL(sql);
             //其次聊天室群主写为空
 
-            sql = @"update liveroom set mainid=0,flag='',liveroomid='0' where id=@roomid ";
+            sql = @"update liveroom set mainid=0,flag='',liveroomid='0',isclose=1,isopen=0 where id=@roomid ";
+            dbhelper.AddParameter("@roomid", req.roomid);
+            dbhelper.ExecuteNonQuerySQL(sql);
+
+            //最后更新历史记录状态改变
+            sql = @" UPDATE roomhistory h INNER JOIN liveroom r ON h.roomid=r.id 
+            SET h.roomname = r.roomname,h.memo = r.memo,h.flag=r.flag,h.mainid = r.mainid,
+            h.endtime = CURRENT_TIMESTAMP,h.isOpen=FALSE
+            WHERE h.roomid = @roomid AND h.isOpen=1 ";
             dbhelper.AddParameter("@roomid", req.roomid);
             dbhelper.ExecuteNonQuerySQL(sql);
 
