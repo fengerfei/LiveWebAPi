@@ -55,8 +55,8 @@ namespace liveWeb.Controllers
                 return ResponseHelper<IList<MsgInfoEntity>>.Success(result);
             }
         }
-
-        public ResponseEntity<IList<PostionInfo>> Get([FromUri]HistroyPostionReqEntity req)
+        [Route("api/HistroyRoom/Postion")]
+        public ResponseEntity<IList<PostionInfo>> GetHistroyRoomPostion([FromUri]HistroyPostionReqEntity req)
         {
             IList<PostionInfo> result = new List<PostionInfo>();
 

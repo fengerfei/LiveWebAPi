@@ -126,10 +126,10 @@ namespace liveWeb.DAL
                 return;
             }
 
-            int hisid = HistroyRoomDL.GetHisId(dbHelper, entity.roomid);
+
             try
             {
-
+                int hisid = HistroyRoomDL.GetHisId(dbHelper, entity.roomid);
                 UserJoinRoomHisTable his = new UserJoinRoomHisTable();
                 his.hisid = hisid;
                 his.roomid = entity.roomid;
