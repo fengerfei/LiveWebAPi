@@ -35,6 +35,32 @@ namespace liveWeb.Controllers
 
             }
         }
+        [Route("api/HistroyRoom/Member")]
+        public ResponseEntity<IList<userEntiy>> GetHistroyRoomMember([FromUri]HisRoomMemberReqEntity req)
+        {
+
+            IList<userEntiy> result = new List<userEntiy>();
+
+            using (var dbhelper = CreateMobileDbHelper())
+            {
+                var dal = new HistroyRoomDL();
+                result = dal.GetHistroyRoomMember(dbhelper, req);
+
+
+                if (result == null || result.Count == 0)
+                {
+                    return ResponseHelper<IList<userEntiy>>.Error(result);
+                }
+                else
+                {
+                    return ResponseHelper<IList<userEntiy>>.Success(result);
+                }
+
+
+            }
+        }
+
+
         [Route("api/HistroyRoom/Msg")]
         public ResponseEntity<IList<MsgInfoEntity>> GetHistroyRoomMsg([FromUri]RoomHistroyMsgListQueryParams req)
         {
@@ -54,6 +80,7 @@ namespace liveWeb.Controllers
 
                 return ResponseHelper<IList<MsgInfoEntity>>.Success(result);
             }
+
         }
         [Route("api/HistroyRoom/Postion")]
         public ResponseEntity<IList<PostionInfo>> GetHistroyRoomPostion([FromUri]HistroyPostionReqEntity req)

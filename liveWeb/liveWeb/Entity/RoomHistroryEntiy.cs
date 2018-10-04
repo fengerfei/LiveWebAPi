@@ -62,7 +62,7 @@ namespace liveWeb.Entity
         public int PageSize { get; set; }
         //历史房间id
         public int hisroomid { get; set; }
-        public DateTime TheTimeBefore { get; set; }
+        public DateTime TheTimeAfter { get; set; }
     }
 
     public class HistroyPostionReqEntity
@@ -74,5 +74,10 @@ namespace liveWeb.Entity
         public DateTime? startTime { get; set; }
 
         public int Size { get; set; }
+    }
+
+    public class HisRoomMemberReqEntity
+    {
+        public int hisroomid { get; set; }
     }
 }

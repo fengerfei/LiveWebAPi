@@ -54,7 +54,19 @@ namespace liveWeb.DAL
                 dbHelper.AddParameter("@status", req.userStatus);
             }
 
-            sql += " order by status desc,freeStartTime";
+            if (req.sorttype == 1)
+            {
+                sql += " order by freeStartTime desc";
+            }
+            else if (req.sorttype == 2)
+            {
+                sql += " order by name";
+            }
+            else
+            {
+                sql += " order by status desc,freeStartTime";
+            }
+            
 
             DbEntity dbEntity = new DbEntity(dbHelper);
             var result =dbEntity.Select<userEntiy>(sql);

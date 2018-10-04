@@ -55,6 +55,9 @@ namespace liveWeb.Entity
         public bool isOpen { get; set; }
 
         public string id { get; set; }
+
+        public string startTime { get; set; }
+
     }
 
     [EntityClass(LowerCaseKey = true, TableName = "liveroom")]
@@ -62,6 +65,5 @@ namespace liveWeb.Entity
     public class liveRoomCreateTable : liveRoomUpdateEntity
     {
 
-        public DateTime startTime { get; set; }
     }
 }

@@ -108,7 +108,14 @@ namespace liveWeb.DAL
 
             if (req.isOpen)
             {
-                table.startTime = st;
+                if (String.IsNullOrEmpty(req.startTime)){
+                    table.startTime = st.ToString("yyyy-MM-dd HH:mm:ss");
+                }
+                else
+                {
+                    table.startTime =req.startTime;
+                }
+                
             }
 
 
@@ -134,13 +141,21 @@ namespace liveWeb.DAL
 
                 //插入历史表
                 int hisid = HistroyRoomDL.GetHisId(dbhelper, rht.roomid);
+                try
+                {
+                    UserJoinRoomHisTable his = new UserJoinRoomHisTable();
+                    his.hisid = hisid;
+                    his.roomid = rht.roomid;
+                    his.userid = req.liveid;
+                    his.jointime = DateTime.Now;
+                    dbEntity.Insert(his);
+                }
+                catch (Exception ex)
+                {
+                    //重复插入会报错，忽略掉这里
 
-                UserJoinRoomHisTable his = new UserJoinRoomHisTable();
-                his.hisid = hisid;
-                his.roomid = rht.roomid;
-                his.userid = req.liveid;
-                his.jointime = DateTime.Now;
-                dbEntity.Insert(his);
+                }
+
 
             }
 

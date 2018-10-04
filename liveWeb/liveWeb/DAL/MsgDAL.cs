@@ -51,10 +51,10 @@ namespace liveWeb.DAL
         public IList<MsgInfoEntity> GetMsgInfo(DbHelper dbhelper, RoomHistroyMsgListQueryParams req)
         {
             string sql = @"select  id,username,msg,otherdata,roomid,msgtime,msgid 
-                    from msg where hisid=@hisid and msgtime<@msgtime order by msgtime limit 0," + req.PageSize;
+                    from msg where hisid=@hisid and msgtime>@msgtime order by msgtime limit 0," + req.PageSize;
 
             dbhelper.AddParameter("@hisid", req.hisroomid);
-            dbhelper.AddParameter("@msgtime", req.TheTimeBefore);
+            dbhelper.AddParameter("@msgtime", req.TheTimeAfter);
 
             DbEntity entity = new DbEntity(dbhelper);
 
