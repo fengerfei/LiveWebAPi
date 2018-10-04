@@ -205,15 +205,18 @@ namespace liveWeb.DAL
             dbhelper.ExecuteNonQuerySQL(sql);
             //其次聊天室群主写为空
 
-            sql = @"update liveroom set mainid=0,flag='',liveroomid='0',isclose=1,isopen=0 where id=@roomid ";
-            dbhelper.AddParameter("@roomid", req.roomid);
-            dbhelper.ExecuteNonQuerySQL(sql);
 
             //最后更新历史记录状态改变
             sql = @" UPDATE roomhistory h INNER JOIN liveroom r ON h.roomid=r.id 
             SET h.roomname = r.roomname,h.memo = r.memo,h.flag=r.flag,h.mainid = r.mainid,
             h.endtime = CURRENT_TIMESTAMP,h.isOpen=FALSE
             WHERE h.roomid = @roomid AND h.isOpen=1 ";
+            dbhelper.AddParameter("@roomid", req.roomid);
+            dbhelper.ExecuteNonQuerySQL(sql);
+
+            //最后群清空
+
+            sql = @"update liveroom set mainid=0,flag='',liveroomid='0',isclose=1,isopen=0 where id=@roomid ";
             dbhelper.AddParameter("@roomid", req.roomid);
             dbhelper.ExecuteNonQuerySQL(sql);
 
