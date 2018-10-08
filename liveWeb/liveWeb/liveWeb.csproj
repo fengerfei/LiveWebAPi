@@ -163,11 +163,13 @@
     <Compile Include="Controllers\PostionController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
+    <Compile Include="Controllers\VersionController.cs" />
     <Compile Include="DAL\HistroyRoomDL.cs" />
     <Compile Include="DAL\LiveRoomDAL.cs" />
     <Compile Include="DAL\MsgDAL.cs" />
     <Compile Include="DAL\PostionDAL.cs" />
     <Compile Include="DAL\UserDAL.cs" />
+    <Compile Include="DAL\VersionDL.cs" />
     <Compile Include="Entity\BaseResponseEntity.cs" />
     <Compile Include="Entity\ChangeUserEntity.cs" />
     <Compile Include="Entity\Enums.cs" />
@@ -181,6 +183,7 @@
     <Compile Include="Entity\RoomHistroryEntiy.cs" />
     <Compile Include="Entity\userEntiy.cs" />
     <Compile Include="Entity\UserReqEntity.cs" />
+    <Compile Include="Entity\VersionEntity.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
