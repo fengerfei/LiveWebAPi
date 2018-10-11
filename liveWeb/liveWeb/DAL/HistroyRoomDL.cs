@@ -36,7 +36,7 @@ namespace liveWeb.DAL
 
         public static int GetHisId(DbHelper db, string roomid)
         {
-            string sql = @"SELECT id FROM roomhistory WHERE roomid=@roomid AND isopen=1";
+            string sql = @"SELECT id FROM roomhistory WHERE roomid=@roomid AND isopen=1 ORDER BY starttime DESC";
 
             db.AddParameter("@roomid", roomid);
 
