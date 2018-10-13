@@ -157,6 +157,7 @@
     <Compile Include="Controllers\BaseApiController.cs" />
     <Compile Include="Controllers\HistroyRoomController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LiveRebackController.cs" />
     <Compile Include="Controllers\LiveRoomController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\MsgController.cs" />
@@ -173,6 +174,7 @@
     <Compile Include="Entity\BaseResponseEntity.cs" />
     <Compile Include="Entity\ChangeUserEntity.cs" />
     <Compile Include="Entity\Enums.cs" />
+    <Compile Include="Entity\LiveRebackEntity.cs" />
     <Compile Include="Entity\LiveRoomEntiy.cs" />
     <Compile Include="Entity\LiveRoomReqEntity.cs" />
     <Compile Include="Entity\LoginReqEntiy.cs" />

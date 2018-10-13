@@ -1,6 +1,7 @@
 ﻿using Carpa.Web.Entity;
 using Carpa.Web.Script;
 using liveWeb.Entity;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -234,6 +235,40 @@ namespace liveWeb.DAL
             DbEntity entity = new DbEntity(dbhelper);
             return entity.SelectFirst<LiveRoomEntiy>(sql);
 
+        }
+
+        public void LiveReback(DbHelper dbhelper, LiveRebackEntity req,String type)
+        {
+            //
+            var reqjson = JsonConvert.SerializeObject(req);
+
+            string sql = @"INSERT INTO record(DATA,type) 
+                            VALUES(@data,@type)";
+            dbhelper.AddParameter("@data", reqjson);
+            dbhelper.AddParameter("@type", type);
+            dbhelper.ExecuteNonQuerySQL(sql);
+
+            sql = @"UPDATE liveroom SET memo=@data
+                    WHERE flag=@flag ";
+
+            dbhelper.AddParameter("@data", reqjson);
+            dbhelper.AddParameter("@flag", req.streamid);
+            dbhelper.ExecuteNonQuerySQL(sql);
+
+            sql = @"UPDATE roomhistory SET memo=@data
+                    WHERE flag=@flag ";
+
+            dbhelper.AddParameter("@data", req.url);
+            dbhelper.AddParameter("@flag", req.streamid);
+            dbhelper.ExecuteNonQuerySQL(sql);
+
+        }
+        public void saveLog(DbHelper dbhelper, String Data)
+        {
+            string sql = @"INSERT INTO Log(Info) 
+                            VALUES(@data)";
+            dbhelper.AddParameter("@data", Data);
+            dbhelper.ExecuteNonQuerySQL(sql);
         }
     }
 }
