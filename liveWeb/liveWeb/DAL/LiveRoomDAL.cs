@@ -217,7 +217,7 @@ namespace liveWeb.DAL
 
             //最后群清空
 
-            sql = @"update liveroom set mainid=0,flag='',liveroomid='0',isclose=1,isopen=0 where id=@roomid ";
+            sql = @"update liveroom set mainid=0,flag='',memo='',liveroomid='0',isclose=1,isopen=0 where id=@roomid ";
             dbhelper.AddParameter("@roomid", req.roomid);
             dbhelper.ExecuteNonQuerySQL(sql);
 
