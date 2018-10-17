@@ -248,19 +248,49 @@ namespace liveWeb.DAL
             dbhelper.AddParameter("@type", type);
             dbhelper.ExecuteNonQuerySQL(sql);
 
-            sql = @"UPDATE liveroom SET memo=@data
+            //取得 memo数据
+            sql = @"select memo from liveroom where flag=@flag";
+            dbhelper.AddParameter("@flag", req.streamid);
+            var liveobj= dbhelper.SelectFirstRow(sql);
+
+            if (liveobj != null)
+            {
+                string memo = liveobj.GetValue<String>("memo");
+                if (String.IsNullOrEmpty(memo))
+                {
+                    memo = "";
+                }
+                memo = memo + req.url+",";
+                sql = @"UPDATE liveroom SET memo=@data
                     WHERE flag=@flag ";
 
-            dbhelper.AddParameter("@data", reqjson);
-            dbhelper.AddParameter("@flag", req.streamid);
-            dbhelper.ExecuteNonQuerySQL(sql);
+                dbhelper.AddParameter("@data", memo);
+                dbhelper.AddParameter("@flag", req.streamid);
+                dbhelper.ExecuteNonQuerySQL(sql);
+            }
 
-            sql = @"UPDATE roomhistory SET memo=@data
+            liveobj = null;
+
+            sql = @"select memo from roomhistory where flag=@flag";
+            dbhelper.AddParameter("@flag", req.streamid);
+            liveobj = dbhelper.SelectFirstRow(sql);
+            if (liveobj != null)
+            {
+                string memo = liveobj.GetValue<String>("memo");
+                if (String.IsNullOrEmpty(memo))
+                {
+                    memo = "";
+                }
+                memo = memo + req.url + ",";
+
+
+                sql = @"UPDATE roomhistory SET memo=@data
                     WHERE flag=@flag ";
+                dbhelper.AddParameter("@data", memo);
+                dbhelper.AddParameter("@flag", req.streamid);
+                dbhelper.ExecuteNonQuerySQL(sql);
+            }
 
-            dbhelper.AddParameter("@data", req.url);
-            dbhelper.AddParameter("@flag", req.streamid);
-            dbhelper.ExecuteNonQuerySQL(sql);
 
         }
         public void saveLog(DbHelper dbhelper, String Data)
