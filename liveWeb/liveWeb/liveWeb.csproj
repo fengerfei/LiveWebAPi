@@ -182,6 +182,7 @@
     <Compile Include="Entity\PagerEntity.cs" />
     <Compile Include="Entity\PostionEntity.cs" />
     <Compile Include="Entity\PostionReqEntity.cs" />
+    <Compile Include="Entity\ReDataEntity.cs" />
     <Compile Include="Entity\RoomHistroryEntiy.cs" />
     <Compile Include="Entity\userEntiy.cs" />
     <Compile Include="Entity\UserReqEntity.cs" />

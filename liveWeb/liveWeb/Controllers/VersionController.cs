@@ -25,6 +25,27 @@ namespace liveWeb.Controllers
             }
             return ResponseHelper<VersionEntity>.Success(entiy);
 
-        } 
+        }
+
+        [Route("api/Version/ClearAll")]
+
+        public ResponseEntity<String> PostClearAll([FromBody]ReDataEntity req)
+        {
+            if (!req.Data.Equals("UpdateData"))
+            {
+                return ResponseHelper<String>.Error("Error");
+            }
+
+            using (var dbhelper = CreateMobileDbHelper())
+            {
+                var dal = new VersionDL();
+
+                if (dal.UpdateData(dbhelper))
+                {
+                    return ResponseHelper<String>.Success("OK");
+                }
+            }
+            return ResponseHelper<String>.Error("Error");
+        }
     }
 }
